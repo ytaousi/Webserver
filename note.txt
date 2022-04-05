@@ -1,0 +1,4 @@
+To do list:
+
+    1 - parse configuration file (refer to Nginx implementation of the configuration file or setup your own structure)
+    2 - setup a socket connection in order to server content on the browser
