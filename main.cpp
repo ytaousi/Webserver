@@ -8,6 +8,7 @@
 
 #include <sys/socket.h> // for listenning and binding
 #include <netinet/in.h> // for manipulating addr family structur !!!!??
+#include <fstream> // read/write from files
 
 int main(int ac, char **av)
 {
@@ -54,13 +55,27 @@ int main(int ac, char **av)
             exit(1);
         }
 
+        std::ifstream readFromFile;
+        std::string filePath;
+        readFromFile.open("./views/index.html", std::ios::out);
+        if (!readFromFile)
+        {
+            std::cout << "Couldnt Open File for Reading" << std::endl;
+            exit(1);
+        }
         char buffer[30000] = {0};
         
-        value_read = read( new_socket , buffer, 30000);
-        
-        printf("%s\n",buffer );
-        write(new_socket , response_string , strlen(response_string));
+        value_read = recv(new_socket, buffer, 30000, 0);
+        printf("\n+++++++++++ Buffer Content ++++++++++\n\n");
+        std::cout << buffer << std::endl; // print the request header got from the browser
+        printf("\n+++++++++++ EndOfBufferContent +++++++++++++\n\n");
+        getline(buffer, filePath);
+        // if (!filePath)
+        //     std::cout << "FilePathEmpty" << std::endl;
+        std::cout << filePath << std::endl;
+        send(new_socket, response_string, strlen(response_string), 0);
         printf("------------------Hello message sent-------------------\n");
+        readFromFile.close();
         close(new_socket);
     }
     return (0);
