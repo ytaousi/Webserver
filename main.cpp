@@ -58,7 +58,7 @@ int main(int ac, char **av)
         std::ifstream readFromFile;
         std::string filePath;
         std::string responseFile;
-        std::string responseHeader = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: 285\n\n"; // 12 for plain 285 for html
+        std::string responseHeader = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: 285\n\n"; // should update the content length
         
         readFromFile.open("./views/index.html", std::ios::out);
         if (!readFromFile)
@@ -67,7 +67,7 @@ int main(int ac, char **av)
             exit(1);
         }
         char buffer[30000] = {0};
-        
+        std::string buff;
         value_read = recv(new_socket, buffer, 30000, 0);
 
         printf("\n+++++++++++ Buffer Content ++++++++++\n\n"); 
@@ -77,6 +77,18 @@ int main(int ac, char **av)
         std::getline(readFromFile, responseFile, '\0');
         std::cout << filePath << std::endl;
 
+        printf("\n++++++++++++++ Path Requsted +++++++++\n\n");
+        buff = buffer;
+        std::cout << buff << std::endl;
+        
+        for (char *tmp = buffer; *tmp != '\n'; tmp++)
+            filePath += *tmp;
+        std::cout << filePath << std::endl;
+        std::string infos[10];
+
+        
+        printf("\n++++++++++++++ EndOfPath ++++++++++++\n\n");
+        
         printf("\n++++++++++++++ Response Content ++++++++++++++++++\n\n");
         std::cout << responseHeader + responseFile << std::endl;
         printf("\n++++++++++++++ EndofResponse Content ++++++++++++++++++\n\n");
