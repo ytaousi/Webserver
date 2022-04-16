@@ -57,6 +57,9 @@ int main(int ac, char **av)
 
         std::ifstream readFromFile;
         std::string filePath;
+        std::string responseFile;
+        std::string responseHeader = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: 285\n\n"; // 12 for plain 285 for html
+        
         readFromFile.open("./views/index.html", std::ios::out);
         if (!readFromFile)
         {
@@ -66,14 +69,22 @@ int main(int ac, char **av)
         char buffer[30000] = {0};
         
         value_read = recv(new_socket, buffer, 30000, 0);
-        printf("\n+++++++++++ Buffer Content ++++++++++\n\n");
+
+        printf("\n+++++++++++ Buffer Content ++++++++++\n\n"); 
         std::cout << buffer << std::endl; // print the request header got from the browser
         printf("\n+++++++++++ EndOfBufferContent +++++++++++++\n\n");
-        getline(buffer, filePath);
-        // if (!filePath)
-        //     std::cout << "FilePathEmpty" << std::endl;
+        
+        std::getline(readFromFile, responseFile, '\0');
         std::cout << filePath << std::endl;
-        send(new_socket, response_string, strlen(response_string), 0);
+
+        printf("\n++++++++++++++ Response Content ++++++++++++++++++\n\n");
+        std::cout << responseHeader + responseFile << std::endl;
+        printf("\n++++++++++++++ EndofResponse Content ++++++++++++++++++\n\n");
+
+        char * responseHtml = (char *)malloc(sizeof(char) * (responseHeader.length() + responseFile.length() + 1));
+        responseHtml = strcpy(responseHtml, responseHeader.c_str());
+        responseHtml = strcat(responseHtml, responseFile.c_str());
+        send(new_socket, responseHtml, strlen(responseHtml), 0);
         printf("------------------Hello message sent-------------------\n");
         readFromFile.close();
         close(new_socket);
