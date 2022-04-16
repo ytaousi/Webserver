@@ -2,4 +2,11 @@ To do list:
 
     1 - parse configuration file (refer to Nginx implementation of the configuration file or setup your own structure)
     2 - setup a socket connection in order to server content on the browser  (raw data vs Files)
-    3 - send files as Response to the browser
+    3 - send files as Response to the browser.
+
+header's to manipulate while constructing the 
+
+General header: Date
+Request header: User-Agent, Referer, Host, Authorization
+Response header: Server, Last-Modified, Transfer-Encoding, WWW-Authenticate, Location
+Entity header: Content-Length, Content-Type, Content-Language, Content-Location, Allow
