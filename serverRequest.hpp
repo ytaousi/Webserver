@@ -7,7 +7,9 @@
 class serverRequest
 {
     public:
-        std::vector<std::string> requestHeaders;
+        std::map<std::string, std::string> headerDirectives;
+        std::vector<std::string> requestBody;
+
     private:
         serverRequest();
         ~serverRequest();
