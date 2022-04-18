@@ -12,7 +12,6 @@
 
 int main(int ac, char **av)
 {
-    char * response_string = "HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 12\n\nHello world!"; // char *  vs std::string
     int server_fd;
     int new_socket; // socket created when a connection is started between 
     long value_read;
@@ -24,7 +23,7 @@ int main(int ac, char **av)
     address.sin_addr.s_addr = INADDR_ANY;
     address.sin_port = htons( 8080 ); // htons convert from numerical value to network representation  from host_byte rep to network_byte rep 
     
-    //memset c++ ish i need
+    //memset c++ ish.
     memset(address.sin_zero, '\0', sizeof address.sin_zero);
     
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
@@ -56,7 +55,7 @@ int main(int ac, char **av)
         }
 
         std::ifstream readFromFile;
-        std::string filePath;
+        std::string uriPath;
         std::string responseFile;
         std::string responseHeader = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: 285\n\n"; // should update the content length
         
@@ -66,25 +65,26 @@ int main(int ac, char **av)
             std::cout << "Couldnt Open File for Reading" << std::endl;
             exit(1);
         }
-        char buffer[30000] = {0};
+
+        char buffer[30000] = {0}; // buffer to fill with request data.
         std::string buff;
+        
         value_read = recv(new_socket, buffer, 30000, 0);
 
         printf("\n+++++++++++ Buffer Content ++++++++++\n\n"); 
         std::cout << buffer << std::endl; // print the request header got from the browser
+        buff = buffer;
         printf("\n+++++++++++ EndOfBufferContent +++++++++++++\n\n");
         
-        std::getline(readFromFile, responseFile, '\0');
-        std::cout << filePath << std::endl;
 
         printf("\n++++++++++++++ Path Requsted +++++++++\n\n");
-        buff = buffer;
-        std::cout << buff << std::endl;
         
         for (char *tmp = buffer; *tmp != '\n'; tmp++)
-            filePath += *tmp;
-        std::cout << filePath << std::endl;
-        std::string infos[10];
+            uriPath += *tmp;
+        
+        std::vector<std::string> bufferHeaders; // vector to store the headers for parsing
+
+
 
         
         printf("\n++++++++++++++ EndOfPath ++++++++++++\n\n");
