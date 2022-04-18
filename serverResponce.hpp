@@ -7,7 +7,8 @@
 class serverResponce
 {
     public:
-        std::vector<std::string> responseHeaders;
+        std::map<std::string, std::string> headerDirectives;
+        std::vector<std::string> responseBody;
     private:
         serverResponce();
         ~serverResponce();
