@@ -113,11 +113,6 @@ int main(int ac, char **av)
         httpVersion = httpRequestHeaderFirstLine.substr(httpRequestHeaderFirstLine.find("HTTP/"));
 
         
-        std::cout << "RequestHeaderFirstLine to Parse : " << httpRequestHeaderFirstLine << std::endl;      
-        std::cout << "METHOD : " << httpMethod << std::endl;
-        std::cout << "URIPATH : " << httpUriPath << std::endl;
-        std::cout << "VERSION : " << httpVersion << std::endl;
-        
         std::map<std::string, std::string>  httpHeaderDirectives; // map to store directives after first line of http request header.
 
         // fill map directives from httpRequestHeader.
