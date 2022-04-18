@@ -7,6 +7,8 @@
 class serverRequest
 {
     public:
+        // Method - uriPath - version 
+
         std::map<std::string, std::string> headerDirectives;
         std::vector<std::string> requestBody;
 
