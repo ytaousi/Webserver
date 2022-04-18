@@ -97,20 +97,22 @@ int main(int ac, char **av)
         std::string                         httpRequestBody   = httpRequestMessage.substr(httpRequestMessage.find("\r\n\r\n") + 4);
 
         std::string                         httpRequestHeaderLine;
-        std::string                         httpMethod;
-        std::string                         httpUriPath;
+        std::string                         httpMethod; // GET or POST or DELETE.
+        std::string                         httpUriPath; // check if its a valid path.
         std::string                         httpVersion;
-        std::map<std::string, std::string>  httpHeaderDirectives;
-        std::vector<std::string>            httpRequestBodyVector;
+        std::map<std::string, std::string>  httpHeaderDirectives; // map to store directives after first line of http request header.
+        std::vector<std::string>            httpRequestBodyVector; // vector to store body of http request.
         
         httpRequestHeaderLine = httpRequestHeader.substr(0, httpRequestHeader.find("\r\n"));
         httpMethod = httpRequestHeaderLine.substr(0, httpRequestHeaderLine.find(" "));
         httpUriPath = httpRequestHeaderLine.substr(httpRequestHeaderLine.find(" ") + 1, httpRequestHeaderLine.find("HTTP/") - httpRequestHeaderLine.find(" ") - 1);
         httpVersion = httpRequestHeaderLine.substr(httpRequestHeaderLine.find("HTTP/"));
 
-        
 
-        std::cout << httpRequestHeaderLine << std::endl;      
+        std::cout << "RequestHeaderLine to Parse : " << httpRequestHeaderLine << std::endl;      
+        std::cout << "METHOD : " << httpMethod << std::endl;
+        std::cout << "URIPATH : " << httpUriPath << std::endl;
+        std::cout << "VERSION : " << httpVersion << std::endl;
         printf("++++++++++++++++++++++++++++++++++++++++++++++++\n");       
         
         char * responseHtml = (char *)malloc(sizeof(char) * (responseHeader.length() + responseBody.length() + 1));
