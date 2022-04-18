@@ -22,6 +22,29 @@ class serverRequest
             uriPath = "";
             version = "";
         }
+        // getters for serverRequest object.
+        const std::string &getRequestMethod() const
+        {
+            return method;
+        }
+        const std::string & getRequestUriPath() const
+        {
+            return uriPath;
+        }
+        const std::string & getRequestVersion() const
+        {
+            return version;
+        }
+        std::map<std::string, std::string> getRequestHeaderDirectives() 
+        {
+            return headerDirectives;
+        }
+        const std::vector<std::string> & getRequestBody() const
+        {
+            return requestBody;
+        }
+
+        // setters for serverRequest object.
         void setHeader(const std::string & httpRequestMessage)
         {
             std::string httpRequestHeader = httpRequestMessage.substr(0, httpRequestMessage.find("\r\n\r\n"));
@@ -40,7 +63,18 @@ class serverRequest
             }
             
         }
-        void setBody(const std::string &requestBody);
+        void setBody(const std::string & httpRequestMessage)
+        {
+            std::string httpRequestBody = httpRequestMessage.substr(httpRequestMessage.find("\r\n\r\n") + 4);
+            std::vector<std::string> httpRequestBodyVector;
+            while (httpRequestBody.find("\r\n") != std::string::npos)
+            {
+                httpRequestBodyVector.push_back(httpRequestBody.substr(0, httpRequestBody.find("\r\n")));
+                httpRequestBody = httpRequestBody.substr(httpRequestBody.find("\r\n") + 2);
+            }
+            requestBody = httpRequestBodyVector;
+            requestBodylength = requestBody.size();
+        }
     private:
         // Method - uriPath - version - headerDirectives - responseBody. 
         std::string                         method;
@@ -50,7 +84,15 @@ class serverRequest
         std::vector<std::string>            requestBody;
         size_t                              requestBodylength;
 
+        // serverRequest default constructor.
         serverRequest();
+        // serverRequest copy constructor
+        serverRequest(const serverRequest & other)
+        {
+            *this = other;
+        }
+        // serverRequest assignment operator.
+        serverRequest & operator=(const serverRequest & other);
 };
 
 #endif

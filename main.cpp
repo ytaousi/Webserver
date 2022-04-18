@@ -94,9 +94,7 @@ int main(int ac, char **av)
 
         printf("++++++++++++++ Parsing Header and Body from the httpRequestMessage +++++++++\n");
         const std::string                         httpRequestMessage = buffer; // buffer is the http request message as char * filled with recv().
-        // serverRequest  object under construction.
-        //serverRequest request(httpRequestMessage);
-        
+
         std::string                         httpRequestHeader = httpRequestMessage.substr(0, httpRequestMessage.find("\r\n\r\n"));
         std::string                         httpRequestBody   = httpRequestMessage.substr(httpRequestMessage.find("\r\n\r\n") + 4);
 
@@ -128,11 +126,34 @@ int main(int ac, char **av)
         }
         
         // print httpHeaderDirectives map.
-        // for (std::map<std::string, std::string>::iterator it = httpHeaderDirectives.begin(); it != httpHeaderDirectives.end(); ++it)
-        // {
-        //     std::cout << it->first << " : " << it->second << std::endl;
-        // }
-                
+        for (std::map<std::string, std::string>::iterator it = httpHeaderDirectives.begin(); it != httpHeaderDirectives.end(); ++it)
+        {
+            std::cout << it->first << " : " << it->second << std::endl;
+        }
+        printf("+++++++++ EndofParsing Header and Body from the httpRequestMessage +++++++++\n");
+        
+        printf("+++++++++++++++++ Request object Data ++++++++++++++++++++++\n");
+        // serverRequest  object under construction.
+        serverRequest request(httpRequestMessage);
+
+        // print request members.
+        std::cout << "httpMethod : " << request.getRequestMethod() << std::endl;
+        std::cout << "httpUriPath : " << request.getRequestUriPath() << std::endl;
+        std::cout << "httpVersion : " << request.getRequestVersion() << std::endl;
+        std::cout << "httpHeaderDirectives : " << std::endl;
+        
+        // print map directives.
+        std::map<std::string, std::string> httpHeaderDirectivesMap = request.getRequestHeaderDirectives();
+        std::map<std::string, std::string>::iterator it = httpHeaderDirectivesMap.begin();
+        for (; it != httpHeaderDirectivesMap.end() ; ++it)
+        {
+            std::cout << it->first << " : " << it->second << std::endl;
+        }
+        
+
+        
+        printf("++++++++++++++++++++++++++++ EndofRequest object Data +++++++++++++++++++++++++++++++++++\n");
+        
         char * responseHtml = (char *)malloc(sizeof(char) * (responseHeader.length() + responseBody.length() + 1));
         responseHtml = strcpy(responseHtml, responseHeader.c_str());
         responseHtml = strcat(responseHtml, responseBody.c_str());
