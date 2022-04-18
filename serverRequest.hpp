@@ -8,14 +8,6 @@
 class serverRequest
 {
     public:
-        // Method - uriPath - version - headerDirectives - responseBody. 
-        std::string                         method;
-        std::string                         uriPath;
-        std::string                         version;
-        std::map<std::string, std::string>  headerDirectives;
-        std::vector<std::string>            requestBody;
-        size_t                              responseBodylength;
-
         serverRequest(const std::string & httpRequestMessage)
         {
             setHeader(httpRequestMessage);
@@ -25,9 +17,11 @@ class serverRequest
         {
             headerDirectives.clear();
             requestBody.clear();
+            requestBodylength = 0;
+            method = "";
+            uriPath = "";
+            version = "";
         }
-    private:
-        serverRequest();
         void setHeader(const std::string & httpRequestMessage)
         {
             std::string httpRequestHeader = httpRequestMessage.substr(0, httpRequestMessage.find("\r\n\r\n"));
@@ -47,6 +41,16 @@ class serverRequest
             
         }
         void setBody(const std::string &requestBody);
+    private:
+        // Method - uriPath - version - headerDirectives - responseBody. 
+        std::string                         method;
+        std::string                         uriPath;
+        std::string                         version;
+        std::map<std::string, std::string>  headerDirectives;
+        std::vector<std::string>            requestBody;
+        size_t                              requestBodylength;
+
+        serverRequest();
 };
 
 #endif
