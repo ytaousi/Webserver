@@ -9,6 +9,7 @@
 #include <sys/socket.h> // for listenning and binding
 #include <netinet/in.h> // for manipulating addr family structur !!!!??
 #include <fstream> // read/write from files
+#include <sstream>
 
 int main(int ac, char **av)
 {
@@ -83,11 +84,11 @@ int main(int ac, char **av)
             exit(1);
         }
 
-        printf("++++++++++++++ Response Content ++++++++++++++++++\n");
+        // printf("++++++++++++++ Response Content ++++++++++++++++++\n");
         
-        std::cout << responseHeader + '\n' + responseBody << std::endl;
+        // std::cout << responseHeader + '\n' + responseBody << std::endl;
 
-        printf("++++++++++++++ EndofResponse Content ++++++++++++++++++\n");
+        // printf("++++++++++++++ EndofResponse Content ++++++++++++++++++\n");
 
 
         printf("++++++++++++++ Parsing Header and Body from the httpRequestMessage +++++++++\n");
@@ -96,25 +97,47 @@ int main(int ac, char **av)
         std::string                         httpRequestHeader = httpRequestMessage.substr(0, httpRequestMessage.find("\r\n\r\n"));
         std::string                         httpRequestBody   = httpRequestMessage.substr(httpRequestMessage.find("\r\n\r\n") + 4);
 
-        std::string                         httpRequestHeaderLine;
+        std::string                         httpRequestDirectiveLine;
         std::string                         httpMethod; // GET or POST or DELETE.
         std::string                         httpUriPath; // check if its a valid path.
         std::string                         httpVersion;
-        std::map<std::string, std::string>  httpHeaderDirectives; // map to store directives after first line of http request header.
         std::vector<std::string>            httpRequestBodyVector; // vector to store body of http request.
+        std::string                         httpRequestHeaderFirstLine;
+
+        httpRequestHeaderFirstLine = httpRequestHeader.substr(0, httpRequestHeader.find("\r\n"));
+        // remove first line from httpRequestHeader.
+        httpRequestHeader = httpRequestHeader.substr(httpRequestHeader.find("\r\n") + 2);
         
-        httpRequestHeaderLine = httpRequestHeader.substr(0, httpRequestHeader.find("\r\n"));
-        httpMethod = httpRequestHeaderLine.substr(0, httpRequestHeaderLine.find(" "));
-        httpUriPath = httpRequestHeaderLine.substr(httpRequestHeaderLine.find(" ") + 1, httpRequestHeaderLine.find("HTTP/") - httpRequestHeaderLine.find(" ") - 1);
-        httpVersion = httpRequestHeaderLine.substr(httpRequestHeaderLine.find("HTTP/"));
+        httpMethod = httpRequestHeaderFirstLine.substr(0, httpRequestHeaderFirstLine.find(" "));
+        httpUriPath = httpRequestHeaderFirstLine.substr(httpRequestHeaderFirstLine.find(" ") + 1, httpRequestHeaderFirstLine.find("HTTP/") - httpRequestHeaderFirstLine.find(" ") - 1);
+        httpVersion = httpRequestHeaderFirstLine.substr(httpRequestHeaderFirstLine.find("HTTP/"));
 
-
-        std::cout << "RequestHeaderLine to Parse : " << httpRequestHeaderLine << std::endl;      
+        
+        std::cout << "RequestHeaderFirstLine to Parse : " << httpRequestHeaderFirstLine << std::endl;      
         std::cout << "METHOD : " << httpMethod << std::endl;
         std::cout << "URIPATH : " << httpUriPath << std::endl;
         std::cout << "VERSION : " << httpVersion << std::endl;
-        printf("++++++++++++++++++++++++++++++++++++++++++++++++\n");       
         
+        printf("+++++++++++++++++++ Directives +++++++++++++++++++++++++++++++++\n");
+        std::map<std::string, std::string>  httpHeaderDirectives; // map to store directives after first line of http request header.
+
+        // fill map directives from httpRequestHeader.
+        while (httpRequestHeader.find("\r\n") != std::string::npos)
+        {
+            httpRequestDirectiveLine = httpRequestHeader.substr(0, httpRequestHeader.find("\r\n"));
+            httpRequestHeader = httpRequestHeader.substr(httpRequestHeader.find("\r\n") + 2);
+            //std::cout << "httpRequestDirectiveLine : " << httpRequestDirectiveLine << std::endl;
+            httpHeaderDirectives[httpRequestDirectiveLine.substr(0, httpRequestDirectiveLine.find(":"))] = httpRequestDirectiveLine.substr(httpRequestDirectiveLine.find(":") + 2);
+        }
+        
+        printf("+++++++++++++++++++ Map of Directives +++++++++++++++++++++++++\n");
+        // print httpHeaderDirectives map.
+        for (auto it = httpHeaderDirectives.begin(); it != httpHeaderDirectives.end(); ++it)
+        {
+            std::cout << "Map Directive line "<< it->first << " : " << it->second << std::endl;
+        }
+        
+        printf("+++++++++++++++++++ Directives +++++++++++++++++++++++++++++++++\n");        
         char * responseHtml = (char *)malloc(sizeof(char) * (responseHeader.length() + responseBody.length() + 1));
         responseHtml = strcpy(responseHtml, responseHeader.c_str());
         responseHtml = strcat(responseHtml, responseBody.c_str());
