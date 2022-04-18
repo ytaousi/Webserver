@@ -10,6 +10,7 @@
 #include <netinet/in.h> // for manipulating addr family structur !!!!??
 #include <fstream> // read/write from files
 #include <sstream>
+#include "serverRequest.hpp"
 
 int main(int ac, char **av)
 {
@@ -92,17 +93,19 @@ int main(int ac, char **av)
 
 
         printf("++++++++++++++ Parsing Header and Body from the httpRequestMessage +++++++++\n");
-        std::string                         httpRequestMessage = buffer; // buffer is the http request message as char * filled with recv().
+        const std::string                         httpRequestMessage = buffer; // buffer is the http request message as char * filled with recv().
+        // serverRequest  object under construction.
+        //serverRequest request(httpRequestMessage);
         
         std::string                         httpRequestHeader = httpRequestMessage.substr(0, httpRequestMessage.find("\r\n\r\n"));
         std::string                         httpRequestBody   = httpRequestMessage.substr(httpRequestMessage.find("\r\n\r\n") + 4);
 
-        std::string                         httpRequestDirectiveLine;
+        std::string                         httpRequestHeaderFirstLine;
         std::string                         httpMethod; // GET or POST or DELETE.
         std::string                         httpUriPath; // check if its a valid path.
         std::string                         httpVersion;
+        std::string                         httpRequestDirectiveLine;
         std::vector<std::string>            httpRequestBodyVector; // vector to store body of http request.
-        std::string                         httpRequestHeaderFirstLine;
 
         httpRequestHeaderFirstLine = httpRequestHeader.substr(0, httpRequestHeader.find("\r\n"));
         // remove first line from httpRequestHeader.
