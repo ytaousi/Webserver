@@ -118,7 +118,6 @@ int main(int ac, char **av)
         std::cout << "URIPATH : " << httpUriPath << std::endl;
         std::cout << "VERSION : " << httpVersion << std::endl;
         
-        printf("+++++++++++++++++++ Directives +++++++++++++++++++++++++++++++++\n");
         std::map<std::string, std::string>  httpHeaderDirectives; // map to store directives after first line of http request header.
 
         // fill map directives from httpRequestHeader.
@@ -126,18 +125,16 @@ int main(int ac, char **av)
         {
             httpRequestDirectiveLine = httpRequestHeader.substr(0, httpRequestHeader.find("\r\n"));
             httpRequestHeader = httpRequestHeader.substr(httpRequestHeader.find("\r\n") + 2);
-            //std::cout << "httpRequestDirectiveLine : " << httpRequestDirectiveLine << std::endl;
+            //std::cout << httpRequestDirectiveLine << std::endl;
             httpHeaderDirectives[httpRequestDirectiveLine.substr(0, httpRequestDirectiveLine.find(":"))] = httpRequestDirectiveLine.substr(httpRequestDirectiveLine.find(":") + 2);
         }
         
-        printf("+++++++++++++++++++ Map of Directives +++++++++++++++++++++++++\n");
         // print httpHeaderDirectives map.
-        for (auto it = httpHeaderDirectives.begin(); it != httpHeaderDirectives.end(); ++it)
-        {
-            std::cout << "Map Directive line "<< it->first << " : " << it->second << std::endl;
-        }
-        
-        printf("+++++++++++++++++++ Directives +++++++++++++++++++++++++++++++++\n");        
+        // for (std::map<std::string, std::string>::iterator it = httpHeaderDirectives.begin(); it != httpHeaderDirectives.end(); ++it)
+        // {
+        //     std::cout << it->first << " : " << it->second << std::endl;
+        // }
+                
         char * responseHtml = (char *)malloc(sizeof(char) * (responseHeader.length() + responseBody.length() + 1));
         responseHtml = strcpy(responseHtml, responseHeader.c_str());
         responseHtml = strcat(responseHtml, responseBody.c_str());
