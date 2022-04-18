@@ -55,8 +55,8 @@ int main(int ac, char **av)
         }
 
         std::ifstream readFromFile;
-        std::string uriPath;
-        std::string responseFile;
+        std::string responseBody;
+        size_t      responseBodySize;
         std::string responseHeader = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: 285\n\n"; // should update the content length
         
         readFromFile.open("./views/index.html", std::ios::out);
@@ -66,39 +66,47 @@ int main(int ac, char **av)
             exit(1);
         }
 
+        for (std::string line; std::getline(readFromFile, line);)
+        {
+            responseBody += line;
+        }
+
+        responseBodySize = responseBody.size();
+        readFromFile.close();
+        
         char buffer[30000] = {0}; // buffer to fill with request data.
-        std::string buff;
         
         value_read = recv(new_socket, buffer, 30000, 0);
+        if (value_read < 0)
+        {
+            std::cout << "Server Failed to Read Request" << std::endl;
+            exit(1);
+        }
 
-        printf("\n+++++++++++ Buffer Content ++++++++++\n\n"); 
-        std::cout << buffer << std::endl; // print the request header got from the browser
-        buff = buffer;
-        printf("\n+++++++++++ EndOfBufferContent +++++++++++++\n\n");
+        printf("++++++++++++++ Response Content ++++++++++++++++++\n");
         
+        std::cout << responseHeader + '\n' + responseBody << std::endl;
 
-        printf("\n++++++++++++++ Path Requsted +++++++++\n\n");
+        printf("++++++++++++++ EndofResponse Content ++++++++++++++++++\n");
+
+
+        printf("++++++++++++++ Parsing Header and Body from the httpRequestMessage +++++++++\n");
+        std::string httpRequestMessage = buffer;
+        std::string httpRequestHeader = httpRequestMessage.substr(0, httpRequestMessage.find("\r\n\r\n"));
+        std::string httpRequestBody   = httpRequestMessage.substr(httpRequestMessage.find("\r\n\r\n") + 4);
+
+        std::string                         httpMethod;
+        std::string                         httpUriPath;
+        std::string                         httpVersion;
+        std::map<std::string, std::string>  httpHeaderDirectives;
+        std::vector<std::string>            httpRequestBodyVector;
         
-        for (char *tmp = buffer; *tmp != '\n'; tmp++)
-            uriPath += *tmp;
+        printf("++++++++++++++++++++++++++++++++++++++++++++++++\n");       
         
-        std::vector<std::string> bufferHeaders; // vector to store the headers for parsing
-
-
-
-        
-        printf("\n++++++++++++++ EndOfPath ++++++++++++\n\n");
-        
-        printf("\n++++++++++++++ Response Content ++++++++++++++++++\n\n");
-        std::cout << responseHeader + responseFile << std::endl;
-        printf("\n++++++++++++++ EndofResponse Content ++++++++++++++++++\n\n");
-
-        char * responseHtml = (char *)malloc(sizeof(char) * (responseHeader.length() + responseFile.length() + 1));
+        char * responseHtml = (char *)malloc(sizeof(char) * (responseHeader.length() + responseBody.length() + 1));
         responseHtml = strcpy(responseHtml, responseHeader.c_str());
-        responseHtml = strcat(responseHtml, responseFile.c_str());
+        responseHtml = strcat(responseHtml, responseBody.c_str());
         send(new_socket, responseHtml, strlen(responseHtml), 0);
-        printf("------------------Hello message sent-------------------\n");
-        readFromFile.close();
         close(new_socket);
     }
     return (0);
