@@ -8,12 +8,15 @@
 class server
 {
     private:
-        std::string _host;
-        std::string _port;
-        std::string _serverName;
-        std::string _root;
-        std::string _errorPage;
-        std::string _location;
+        std::string                 _port;
+        std::string                 _serverName;
+        std::string                 _root;
+        std::string                 _errorPage;
+        std::string                 _location;
+        std::string                 _charSet;
+        std::vector<std::string>    _indexFiles;
+
+
     public:
         server();
         ~server();

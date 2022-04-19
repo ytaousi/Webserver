@@ -11,6 +11,7 @@
 #include <fstream> // read/write from files
 #include <sstream>
 #include "serverRequest.hpp"
+#include "server.hpp"
 
 int main(int ac, char **av)
 {
@@ -149,10 +150,9 @@ int main(int ac, char **av)
         {
             std::cout << it->first << " : " << it->second << std::endl;
         }
-        
 
-        
         printf("++++++++++++++++++++++++++++ EndofRequest object Data +++++++++++++++++++++++++++++++++++\n");
+
         
         char * responseHtml = (char *)malloc(sizeof(char) * (responseHeader.length() + responseBody.length() + 1));
         responseHtml = strcpy(responseHtml, responseHeader.c_str());
