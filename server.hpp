@@ -24,7 +24,7 @@ class server
         server(const std::vector<std::string> & serverBlock);
         ~server();
         
-        // print server configuration.
+        // print server
         void printServerConfig() const;
         
         // getters.
@@ -35,6 +35,15 @@ class server
         std::string getCharSet() const;
         std::vector<std::string> getIndexFiles() const;
         std::vector<std::string> getLocations() const;
+
+        // setters not difined yet.
+        void setPort(const std::string & port);
+        void setServerName(const std::string & serverName);
+        void setRoot(const std::string & root);
+        void setErrorPage(const std::string & errorPage);
+        void setCharSet(const std::string & charSet);
+        void setIndexFiles(const std::vector<std::string> & indexFiles);
+        void setLocations(const std::vector<std::string> & locations);
 
 
 

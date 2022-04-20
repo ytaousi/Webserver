@@ -2,6 +2,7 @@
 
 server::server(const std::vector<std::string> & serverBlock)
 {
+    // getConfigurations(serverBlock);
     for (std::vector<std::string>::const_iterator it = serverBlock.begin(); it != serverBlock.end(); ++it)
     {
         if (it->find("listen :") != std::string::npos)
@@ -126,3 +127,39 @@ std::vector<std::string> server::getLocations() const
 {
     return _locations;
 }
+
+// setters
+void server::setPort(const std::string & port)
+{
+    ;
+}
+void setServerName(const std::string & serverName)
+{
+    ;
+}
+
+void setRoot(const std::string & root)
+{
+    ;
+}
+
+void setErrorPage(const std::string & errorPage)
+{
+    ;
+}
+
+void setCharSet(const std::string & charSet)
+{
+    ;
+}
+
+void setIndexFiles(const std::vector<std::string> & indexFiles)
+{
+    ;
+}
+
+void setLocations(const std::vector<std::string> & locations)
+{
+    ;
+}
+
