@@ -4,7 +4,7 @@
 # include <sstream>
 # include "server.hpp"
 
-std::vector<std::string> getServerBlock(std::istream & configFile)
+const std::vector<std::string>  getServerBlock(std::istream & configFile)
 {
     std::vector<std::string> serverBlock;
     for (std::string line ; std::getline(configFile, line);)
@@ -48,23 +48,13 @@ int main(int ac, char **av)
 
     printf("++++++++++++++++ extract server block +++++++++++++++++++++++++++++\n");
     // extract server block between brackets from config file.
-    //std::vector<server>         serverBlocks; // vector to store server block content between curly brackets.
-    std::vector<std::string>    serverBlock1;
-    std::vector<std::string>    serverBlock2;
+    const std::vector<std::string>    serverBlock1 = getServerBlock(configFile);
+    //std::vector<std::string>    serverBlock2;
+    //std::vector<server *>         servers;
 
+    server server1(serverBlock1);
 
-    serverBlock1 = getServerBlock(configFile);
-    for (std::vector<std::string>::iterator it = serverBlock1.begin(); it != serverBlock1.end(); ++it)
-    {
-        std::cout << *it << std::endl;
-    }
-
-    serverBlock2 = getServerBlock(configFile);
-    for (std::vector<std::string>::iterator it = serverBlock2.begin(); it != serverBlock2.end(); ++it)
-    {
-        std::cout << *it << std::endl;
-    }
-
+    server1.printServerConfig();
 
     // print server blocks c++98 syntax.
     
