@@ -62,7 +62,7 @@ class server
                 // }
                 // if (it->find("location", 0) != std::string::npos)
                 // {
-                //     ;
+                //     
                 // }
             }
         }
