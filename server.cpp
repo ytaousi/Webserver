@@ -85,10 +85,10 @@ void server::printServerConfig() const
         std::cout << "\t" << *it << std::endl;
     }
     std::cout << "locations: " << std::endl;
-    for (std::vector<std::string>::const_iterator it = _locations.begin(); it != _locations.end(); ++it)
-    {
-        std::cout << *it << std::endl;
-    }
+    // for (std::vector<std::string>::const_iterator it = _locations.begin(); it != _locations.end(); ++it)
+    // {
+    //     std::cout << *it << std::endl;
+    // }
 }
 
 

@@ -2,7 +2,7 @@
 # include <string>
 # include <fstream>
 # include <sstream>
-# include "server.hpp"
+# include "httpWebServer.hpp"
 
 const std::vector<std::string>  getServerBlock(std::istream & configFile)
 {
@@ -47,14 +47,12 @@ int main(int ac, char **av)
     }
 
     printf("++++++++++++++++ extract server block +++++++++++++++++++++++++++++\n");
-    // extract server block between brackets from config file.
+    httpWebServer   webServer(configFilePath);
     const std::vector<std::string>    serverBlock1 = getServerBlock(configFile);
-    //std::vector<std::string>    serverBlock2;
-    //std::vector<server *>         servers;
 
-    server server1(serverBlock1);
+    webServer.createNewServer(serverBlock1);
+    webServer.printServerConfiguration(1);
 
-    server1.printServerConfig();
 
     // print server blocks c++98 syntax.
     
