@@ -14,7 +14,7 @@ class httpWebServer
         httpWebServer(const std::string & configFilePath)
         {
             _configFilePath = configFilePath;
-            getConfigurations(_configFilePath);
+            //getConfigurations(_configFilePath);
         }
         ~httpWebServer()
         {

@@ -49,10 +49,16 @@ int main(int ac, char **av)
     printf("++++++++++++++++ extract server block +++++++++++++++++++++++++++++\n");
     httpWebServer   webServer(configFilePath);
     const std::vector<std::string>    serverBlock1 = getServerBlock(configFile);
+    const std::vector<std::string>    serverBlock2 = getServerBlock(configFile);
 
+    // server server1(serverBlock1);
+
+    // server1.printServerConfig();
     webServer.createNewServer(serverBlock1);
+    webServer.createNewServer(serverBlock2);
+    
     webServer.printServerConfiguration(1);
-
+    webServer.printServerConfiguration(2);
 
     // print server blocks c++98 syntax.
     
