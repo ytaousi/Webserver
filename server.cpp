@@ -55,7 +55,7 @@ server::server(const std::vector<std::string> & serverBlock)
                std::cout << "location directive found at line " << std::distance(serverBlock.begin(), it) << std::endl;
                // setup locations map<string, vector<string> >.
                //
-               setLocations(serverBlock, it);
+               setLocations(serverBlock, &it);
         }
     }
 }
@@ -157,14 +157,25 @@ void setIndexFiles(const std::vector<std::string> & indexFiles)
     ;
 }
 
-void server::setLocations(const std::vector<std::string> & serverBlock, std::vector<std::string>::const_iterator & it)
+void server::setLocations(const std::vector<std::string> & serverBlock, std::vector<std::string>::const_iterator *it)
 {
-    std::string locationDirectivePath = it->substr(it->find("location : ") + 11, it->size());
+    std::string locationDirectivePath;
+
+    locationDirectivePath = (*it)->substr((*it)->find("location : ") + 11, (*it)->size());
     std::cout << "locationDirectivePath :" << locationDirectivePath << std::endl;
+
+    std::vector<std::string> locationDirectiveContent;
+
+    locationDirectiveContent = getLocationBlock(serverBlock, &locationDirectivePath);
+    std::cout << "locationDirectiveContent : " << std::endl;
+
+    for (std::vector<std::string>::const_iterator it = locationDirectiveContent.begin(); it != locationDirectiveContent.end(); it++)
+    {
+        std::cout << "\t" << *it << std::endl;
+    }
     
     
-    std::string locationDirectiveContent = ;
-    std::vector<std::string> locationDirectiveContentVector;
+    // std::vector<std::string> locationDirectiveContentVector;
     
     
     // std::stringstream ss(locationDirectiveContent);
@@ -174,4 +185,9 @@ void server::setLocations(const std::vector<std::string> & serverBlock, std::vec
     //     locationDirectiveContentVector.push_back(token);
     // }
     // _locations.insert(std::pair<std::string, std::vector<std::string> >(locationPath, locationDirectiveContentVector));
+}
+
+std::vector<std::string> server::getLocationBlock(const std::vector<std::string> & serverBlock, std::string *locationDirectivePath)
+{
+    ;
 }
