@@ -162,7 +162,16 @@ void server::setLocations(const std::vector<std::string> & serverBlock, std::vec
     std::string locationDirectivePath = it->substr(it->find("location : ") + 11, it->size());
     std::cout << "locationDirectivePath :" << locationDirectivePath << std::endl;
     
-    std::vector<std::string> locationDirectiveContent;
-
-    ;
+    
+    std::string locationDirectiveContent = ;
+    std::vector<std::string> locationDirectiveContentVector;
+    
+    
+    // std::stringstream ss(locationDirectiveContent);
+    // std::string       token;
+    // while (std::getline(ss, token, ' '))
+    // {
+    //     locationDirectiveContentVector.push_back(token);
+    // }
+    // _locations.insert(std::pair<std::string, std::vector<std::string> >(locationPath, locationDirectiveContentVector));
 }
