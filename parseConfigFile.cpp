@@ -57,7 +57,8 @@ int main(int ac, char **av)
     //httpServer.createNewServer(serverBlock1);
     //httpServer.createNewServer(serverBlock2);
     
-    httpServer.printServerConfiguration();
+    // print all virtual servers configuration.
+    //httpServer.printServerConfiguration();
 
 
 

@@ -52,7 +52,10 @@ server::server(const std::vector<std::string> & serverBlock)
         }
         if (it->find("location :", 0) != std::string::npos)
         {
-               
+               std::cout << "location directive found at line " << std::distance(serverBlock.begin(), it) << std::endl;
+               // setup locations map<string, vector<string> >.
+               //
+               setLocations(serverBlock, it);
         }
     }
 }
@@ -119,7 +122,7 @@ std::vector<std::string> server::getIndexFiles() const
     return _indexFiles;
 }
 
-std::vector<std::string> server::getLocations() const
+std::map<std::string, std::vector<std::string> > server::getLocations() const
 {
     return _locations;
 }
@@ -154,8 +157,12 @@ void setIndexFiles(const std::vector<std::string> & indexFiles)
     ;
 }
 
-void setLocations(const std::vector<std::string> & locations)
+void server::setLocations(const std::vector<std::string> & serverBlock, std::vector<std::string>::const_iterator & it)
 {
+    std::string locationDirectivePath = it->substr(it->find("location : ") + 11, it->size());
+    std::cout << "locationDirectivePath :" << locationDirectivePath << std::endl;
+    
+    std::vector<std::string> locationDirectiveContent;
+
     ;
 }
-

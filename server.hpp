@@ -10,15 +10,14 @@
 class server
 {
     private:
-        std::string                 _port;
-        std::string                 _serverName;
-        std::string                 _root;
-        std::string                 _errorPage;
-        std::string                 _errorPageStatus;
-        std::string                 _charSet;
-        std::vector<std::string>    _indexFiles;
-        //std::vector<std::string>    _locations;
-        std::map<std::string, std::vector<std::string> >    _locations;
+        std::string                                     _port;
+        std::string                                     _serverName;
+        std::string                                     _root;
+        std::string                                     _errorPage;
+        std::string                                     _errorPageStatus;
+        std::string                                     _charSet;
+        std::vector<std::string>                        _indexFiles;
+        std::map<std::string, std::vector<std::string> > _locations;
 
     public:
         server(const std::vector<std::string> & serverBlock);
@@ -34,7 +33,7 @@ class server
         std::string getErrorPage() const;
         std::string getCharSet() const;
         std::vector<std::string> getIndexFiles() const;
-        std::vector<std::string> getLocations() const;
+        std::map<std::string, std::vector<std::string> > getLocations() const;
 
         // setters not difined yet.
         void setPort(const std::string & port);
@@ -43,10 +42,7 @@ class server
         void setErrorPage(const std::string & errorPage);
         void setCharSet(const std::string & charSet);
         void setIndexFiles(const std::vector<std::string> & indexFiles);
-        void setLocations(const std::vector<std::string> & locations);
-
-
-
+        void setLocations(const std::vector<std::string> & serverBlock, std::vector<std::string>::const_iterator & it);
 };
 
 #endif
