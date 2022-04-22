@@ -17,8 +17,8 @@ class server
         std::string                 _errorPageStatus;
         std::string                 _charSet;
         std::vector<std::string>    _indexFiles;
-        std::vector<std::string>    _locations;
-
+        //std::vector<std::string>    _locations;
+        std::map<std::string, std::vector<std::string> >    _locations;
 
     public:
         server(const std::vector<std::string> & serverBlock);

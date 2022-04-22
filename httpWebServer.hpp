@@ -9,17 +9,24 @@ class httpWebServer
     private:
         std::vector<server>     _servers;
         std::string             _configFilePath;
+        size_t                  _serverCount;
     
     public:
+        size_t getServerCount() const
+        {
+            return _serverCount;
+        }
         httpWebServer(const std::string & configFilePath)
         {
             _configFilePath = configFilePath;
-            //getConfigurations(_configFilePath);
+            _serverCount = 0;
+            getConfigurations(_configFilePath);
         }
         ~httpWebServer()
         {
             _servers.clear();
             _configFilePath.clear();
+            _serverCount = 0;
         }
         
         void    createNewServer(const std::vector<std::string> & serverBlock)
@@ -44,9 +51,9 @@ class httpWebServer
             for (std::vector<std::string>  serverBlock = getServerBlock(configFile); serverBlock.size() > 0; serverBlock = getServerBlock(configFile))
             {
                 createNewServer(serverBlock);
+                _serverCount++;
             }
         }
-
         // i think i wont need to use this function here, stop feeding.
         // i think i will need it lol.
         const std::vector<std::string>  getServerBlock(std::istream & configFile)
@@ -77,14 +84,12 @@ class httpWebServer
         } 
 
         // print server configuration of the selected server.
-        void printServerConfiguration(size_t serverCount) const
+        void printServerConfiguration() const
         {
-            if (serverCount > _servers.size())
+            for (size_t i = 0; i < _serverCount; i++)
             {
-                std::cout << "Invalid Server Number" << std::endl;
-                return ;
+                _servers[i].printServerConfig();
             }
-            _servers[serverCount - 1].printServerConfig();
         }
 };
 

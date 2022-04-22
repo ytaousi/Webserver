@@ -50,10 +50,10 @@ server::server(const std::vector<std::string> & serverBlock)
                 _indexFiles.push_back(token);
             }
         }
-        // if (it->find("location :", 0) != std::string::npos)
-        // {
-        //     
-        // }
+        if (it->find("location :", 0) != std::string::npos)
+        {
+               
+        }
     }
 }
 
@@ -85,10 +85,6 @@ void server::printServerConfig() const
         std::cout << "\t" << *it << std::endl;
     }
     std::cout << "locations: " << std::endl;
-    // for (std::vector<std::string>::const_iterator it = _locations.begin(); it != _locations.end(); ++it)
-    // {
-    //     std::cout << *it << std::endl;
-    // }
 }
 
 
