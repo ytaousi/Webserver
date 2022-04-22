@@ -166,9 +166,10 @@ void server::setLocations(const std::vector<std::string> & serverBlock, std::vec
 
     std::vector<std::string> locationDirectiveContent;
 
-    locationDirectiveContent = getLocationBlock(serverBlock, &locationDirectivePath);
+    locationDirectiveContent = getLocationBlock(serverBlock, *it);
     std::cout << "locationDirectiveContent : " << std::endl;
 
+    // print Extracted location block
     for (std::vector<std::string>::const_iterator it = locationDirectiveContent.begin(); it != locationDirectiveContent.end(); it++)
     {
         std::cout << "\t" << *it << std::endl;
@@ -187,7 +188,7 @@ void server::setLocations(const std::vector<std::string> & serverBlock, std::vec
     // _locations.insert(std::pair<std::string, std::vector<std::string> >(locationPath, locationDirectiveContentVector));
 }
 
-std::vector<std::string> server::getLocationBlock(const std::vector<std::string> & serverBlock, std::string *locationDirectivePath)
+std::vector<std::string> server::getLocationBlock(const std::vector<std::string> & serverBlock, std::vector<std::string>::const_iterator  it)
 {
-    ;
+    
 }

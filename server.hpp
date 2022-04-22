@@ -34,8 +34,8 @@ class server
         std::string getCharSet() const;
         std::vector<std::string> getIndexFiles() const;
         std::map<std::string, std::vector<std::string> > getLocations() const;
-        std::vector<std::string> getLocationBlock(const std::vector<std::string> & serverBlock, std::string *locationDirectivePath);
-
+        std::vector<std::string> server::getLocationBlock(const std::vector<std::string> & serverBlock, std::vector<std::string>::const_iterator  it);
+        
 
         // setters not difined yet.
         void setPort(const std::string & port);
