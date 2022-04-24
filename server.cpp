@@ -132,27 +132,27 @@ void server::setPort(const std::string & port)
 {
     ;
 }
-void setServerName(const std::string & serverName)
+void server::setServerName(const std::string & serverName)
 {
     ;
 }
 
-void setRoot(const std::string & root)
+void server::setRoot(const std::string & root)
 {
     ;
 }
 
-void setErrorPage(const std::string & errorPage)
+void server::setErrorPage(const std::string & errorPage)
 {
     ;
 }
 
-void setCharSet(const std::string & charSet)
+void server::setCharSet(const std::string & charSet)
 {
     ;
 }
 
-void setIndexFiles(const std::vector<std::string> & indexFiles)
+void server::setIndexFiles(const std::vector<std::string> & indexFiles)
 {
     ;
 }
@@ -175,7 +175,6 @@ void server::setLocations(const std::vector<std::string> & serverBlock, std::vec
         std::cout << "\t" << *it << std::endl;
     }
     
-    
     // std::vector<std::string> locationDirectiveContentVector;
     
     
@@ -190,5 +189,7 @@ void server::setLocations(const std::vector<std::string> & serverBlock, std::vec
 
 std::vector<std::string> server::getLocationBlock(const std::vector<std::string> & serverBlock, std::vector<std::string>::const_iterator  it)
 {
-    
+    std::vector<std::string> serverBlockContent;
+
+   
 }
