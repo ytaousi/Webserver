@@ -3,27 +3,7 @@
 # include <fstream>
 # include <sstream>
 # include "httpWebServer.hpp"
-
-const std::vector<std::string>  getServerBlock(std::istream & configFile)
-{
-    std::vector<std::string> serverBlock;
-    for (std::string line ; std::getline(configFile, line);)
-    {
-        if (line.find("server {", 0) != std::string::npos)
-        {
-            for (; line.find("};", 0) == std::string::npos; std::getline(configFile, line))
-            {
-                serverBlock.push_back(line);
-            }
-        }
-        if (line.find("};", 0) != std::string::npos)
-        {
-            serverBlock.push_back(line);
-            break;
-        }
-    }
-    return serverBlock;
-}
+# include "parseUtils.hpp"
 
 int main(int ac, char **av)
 {
@@ -64,7 +44,14 @@ int main(int ac, char **av)
     std::vector<std::string> serverBlock = getServerBlock(configFile);
     std::map<std::string, std::vector<std::string> > locations = servers[0].getLocations();
 
-    
+    for (std::map<std::string, std::vector<std::string> >::const_iterator it = locations.begin(); it != locations.end(); it++)
+    {
+        std::cout << it->first << std::endl;
+        for (std::vector<std::string>::const_iterator it2 = it->second.begin(); it2 != it->second.end(); it2++)
+        {
+            std::cout << *it2 << std::endl;
+        }
+    }    
     // print server block of selected server.
     for (std::vector<std::string>::const_iterator it = serverBlock.begin(); it != serverBlock.end(); it++)
     {

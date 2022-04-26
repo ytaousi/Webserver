@@ -62,6 +62,13 @@ int main(int ac, char **av)
         size_t      responseBodySize;
         std::string responseHeader = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: 285\n\n"; // should update the content length
         
+//         char *x = R"( 
+// HTTP/1.1 200 OK
+// Content-Type: text/html
+// Content-Length: 285
+
+//     )";
+        
         readFromFile.open("./views/index.html", std::ios::out);
         if (!readFromFile)
         {

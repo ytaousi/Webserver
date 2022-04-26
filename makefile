@@ -1,15 +1,16 @@
 NAME = httpServer
 
-PARSE = parseConfigeFile.cpp httpWebServer.cpp server.cpp serverRequest.cpp serverResponce.cpp
+PARSE = parseConfigFile.cpp httpWebServer.cpp server.cpp serverRequest.cpp parseUtils.cpp
 
-SRCS = main.cpp httpWebServer.cpp server.cpp serverRequest.cpp serverResponce.cpp
+SRCS = main.cpp httpWebServer.cpp server.cpp serverRequest.cpp
 
 FLAGS = -Wall -Werror -Wextra
 
 all : $(NAME)
-	clang++ --std=c++98 $(FLAGS) $(SRCS)
-
-parse : $(NAME)
+	
+$(NAME) :
+	clang++ --std=c++98 $(SRCS)
+parse :
 	clang++ --std=c++98 $(PARSE)
 clean:
 	rm -rf $(NAME)

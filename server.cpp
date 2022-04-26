@@ -19,7 +19,6 @@ void server::setLocations(const std::vector<std::string> & serverBlock, std::vec
     std::string locationDirectivePath;
 
     locationDirectivePath = (*it)->substr((*it)->find("location : ") + 11, (*it)->size());
-    //std::cout << "locationDirectivePath :" << locationDirectivePath << std::endl;
 
     std::vector<std::string>    locationDirectiveContent;
 
@@ -39,12 +38,6 @@ void server::setLocations(const std::vector<std::string> & serverBlock, std::vec
             locationDiv.push_back(*it2);
         }
     }
-
-    // print Extracted location block
-    // for (std::vector<std::string>::const_iterator it = locationDirectiveContent.begin(); it != locationDirectiveContent.end(); it++)
-    // {
-    //     std::cout << "\t" << *it << std::endl;
-    // }
 
     // fill _locations map with key as locationDirectivePath and value as locationDirectiveContent
     _locations.insert(std::make_pair(locationDirectivePath, locationDiv));
