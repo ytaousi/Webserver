@@ -59,6 +59,29 @@ int main(int ac, char **av)
     
     // print all virtual servers configuration.
     //httpServer.printServerConfiguration();
+    
+    std::vector<server> servers = httpServer.getServers();
+    std::vector<std::string> serverBlock = getServerBlock(configFile);
+    std::map<std::string, std::vector<std::string> > locations = servers[0].getLocations();
+
+    
+    // print server block of selected server.
+    for (std::vector<std::string>::const_iterator it = serverBlock.begin(); it != serverBlock.end(); it++)
+    {
+        std::cout << *it << std::endl;
+    }
+
+    printf("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+    
+    // print location block of selected server.
+    for (std::map<std::string, std::vector<std::string> >::const_iterator it = locations.begin(); it != locations.end(); it++)
+    {
+        std::cout << "locationDirectives : \n";
+        for (std::vector<std::string>::const_iterator it2 = (*it).second.begin() ; it2 != (*it).second.end() ; it2++)
+        {
+            std::cout << *it2 << std::endl;
+        };
+    }
 
 
 

@@ -18,6 +18,7 @@ class server
         std::string                                     _charSet;
         std::vector<std::string>                        _indexFiles;
         std::map<std::string, std::vector<std::string> > _locations;
+        size_t                                           _tmp;
 
     public:
         server(const std::vector<std::string> & serverBlock);
@@ -34,6 +35,8 @@ class server
         std::string getCharSet() const;
         std::vector<std::string> getIndexFiles() const;
         std::map<std::string, std::vector<std::string> > getLocations() const;
+        
+        // under Construction
         std::vector<std::string> getLocationBlock(const std::vector<std::string> & serverBlock, std::vector<std::string>::const_iterator  it);
         
 
@@ -44,6 +47,7 @@ class server
         void setErrorPage(const std::string & errorPage);
         void setCharSet(const std::string & charSet);
         void setIndexFiles(const std::vector<std::string> & indexFiles);
+        // under Construction
         void setLocations(const std::vector<std::string> & serverBlock, std::vector<std::string>::const_iterator * it);
 };
 
