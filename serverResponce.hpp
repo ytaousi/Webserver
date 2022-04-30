@@ -8,8 +8,8 @@
 class serverResponce
 {
     public:
-        std::map<std::string, std::string> headerDirectives;
-        std::vector<std::string> responseBody;
+        std::map<std::string, std::string>  _headerDirectives;
+        std::vector<std::string>            _responseBody;
     private:
         serverResponce();
         ~serverResponce();

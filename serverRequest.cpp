@@ -11,9 +11,9 @@ serverRequest::~serverRequest()
     headerDirectives.clear();
     requestBody.clear();
     requestBodylength = 0;
-    method = "";
-    uriPath = "";
-    version = "";
+    method.clear();
+    uriPath.clear();
+    version.clear();
 }
 
 // getters for serverRequest object.

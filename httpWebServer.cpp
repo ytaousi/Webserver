@@ -1,15 +1,31 @@
 # include "httpWebServer.hpp"
 
+
+void httpWebServer::connectServers()
+{
+    for (int i = 0; i < _serverCount; i++)
+    {
+        _servers[i].createSocket();
+        _servers[i].bindSocket();
+        _servers[i].listenForConnection(10);
+    }
+}
+
+
 size_t httpWebServer::getServerCount() const
 {
     return _serverCount;
 }
+
+
 httpWebServer::httpWebServer(const std::string & configFilePath)
 {
     _configFilePath = configFilePath;
     _serverCount = 0;
     getConfigurations(_configFilePath);
+    connectServers();
 }
+
 httpWebServer::~httpWebServer()
 {
     _servers.clear();
@@ -38,18 +54,14 @@ void    httpWebServer::getConfigurations(const std::string & configFilePath)
     // create new server object if server block is found.
     for (std::vector<std::string>  serverBlock = getServerBlock(configFile); serverBlock.size() > 0; serverBlock = getServerBlock(configFile))
     {
-        // printf("\n++++++++++++++++  Server Block Content +++++++++++++++++\n");
-        // for (std::vector<std::string>::const_iterator it = serverBlock.begin(); it != serverBlock.end(); it++)
-        // {
-        //     std::cout << *it << std::endl;
-        // }
-        // printf("\n++++++++++++++++ EndOf Server Block Content +++++++++++++++++\n");
+        // ValidateBlockConfig then create serverObject.
+        // if not valide throw error .
+        // not done yet.
         createNewServer(serverBlock);
         _serverCount++;
     }
 }
-// i think i wont need to use this function here, stop feeding.
-// i think i will need it lol.
+
 const std::vector<std::string>  httpWebServer::getServerBlock(std::istream & configFile)
 {
     std::vector<std::string> serverBlock;

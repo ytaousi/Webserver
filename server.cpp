@@ -96,9 +96,6 @@ server::server(const std::vector<std::string> & serverBlock)
         }
         if (it->find("location :", 0) != std::string::npos)
         {
-               //std::cout << "location directive found at line : " << std::distance(serverBlock.begin(), it) << " : " << *it  << std::endl;
-
-               // setup locations map<string, vector<string> >.
                setLocations(serverBlock, &it);
         }
     }
@@ -115,6 +112,8 @@ server::~server()
     _charSet.clear();
     _indexFiles.clear();
     _locations.clear();
+    _cgiExtentions.clear();
+    // _socketFd;
 }
 
 // print server configuration.
@@ -131,7 +130,13 @@ void server::printServerConfig() const
     {
         std::cout << "\t" << *it << std::endl;
     }
-    // still not working.
+    std::cout << "cgiExtentions: " << std::endl;
+    for (std::vector<std::string>::const_iterator it = _cgiExtentions.begin(); it != _cgiExtentions.end(); it++)
+    {
+        std::cout << "\t" << std::endl;
+    }
+
+    // done
     std::cout << "locations: " << std::endl;
     int i = 0;
     for (std::map<std::string, std::vector<std::string> >::const_iterator it = _locations.begin(); it != _locations.end(); it++)
@@ -212,4 +217,42 @@ void server::setIndexFiles(const std::vector<std::string> & indexFiles)
     {
         _indexFiles.push_back(*it);
     }
+}
+
+void                            server::createSocket(void)
+{
+    if ((_socketFd = socket(AF_INET, SOCK_STREAM, 0)) == -1 )
+    {
+        std::cout << "Couldn't Create Socket for Communication" << std::endl;
+        exit(1);
+    }
+}
+
+void                            server::bindSocket(void)
+{
+    _address.sin_family = AF_INET;
+    _address.sin_addr.s_addr = INADDR_ANY;
+    _address.sin_port = htons(std::atoi(getPort().c_str()));
+
+    memset(_address.sin_zero, '\0', sizeof(_address.sin_zero));
+
+    if (bind(_socketFd, (struct sockaddr *)&_address, sizeof(_address)) < 0)
+    {
+        std::cout << "Couldn't Bind Socket" << std::endl;
+        exit(1);
+    }
+}
+
+void                            server::listenForConnection(int maxConnections)
+{
+    if (listen(_socketFd, maxConnections) < 0)
+    {
+        std::cout << "Couldn't Listen for Connection" << std::endl;
+        exit(1);
+    }
+}
+
+int                             server::getSocketFd(void) const
+{
+    return _socketFd;
 }

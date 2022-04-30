@@ -12,6 +12,7 @@
 #include <sstream>
 #include "serverRequest.hpp"
 #include "server.hpp"
+#include "httpWebServer.hpp"
 
 int main(int ac, char **av)
 {
@@ -27,7 +28,7 @@ int main(int ac, char **av)
     address.sin_port = htons( 8080 ); // htons convert from numerical value to network representation  from host_byte rep to network_byte rep 
     
     //memset c++ ish.
-    memset(address.sin_zero, '\0', sizeof address.sin_zero);
+    memset(address.sin_zero, '\0', sizeof (address.sin_zero));
     
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
@@ -56,18 +57,16 @@ int main(int ac, char **av)
             std::cout << "Server Failed to Accept Any Connection" << std::endl;
             exit(1);
         }
+        else
+        {
+            printf("\n+++++++ New Connection ++++++++\n\n");
+            std::cout << "Client Filedescriptor : " << new_socket << std::endl;
+        }
 
         std::ifstream readFromFile;
         std::string responseBody;
         size_t      responseBodySize;
         std::string responseHeader = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: 285\n\n"; // should update the content length
-        
-//         char *x = R"( 
-// HTTP/1.1 200 OK
-// Content-Type: text/html
-// Content-Length: 285
-
-//     )";
         
         readFromFile.open("./views/index.html", std::ios::out);
         if (!readFromFile)
@@ -93,73 +92,30 @@ int main(int ac, char **av)
             exit(1);
         }
 
-        // printf("++++++++++++++ Response Content ++++++++++++++++++\n");
         
-        // std::cout << responseHeader + '\n' + responseBody << std::endl;
-
-        // printf("++++++++++++++ EndofResponse Content ++++++++++++++++++\n");
-
-
-        printf("++++++++++++++ Parsing Header and Body from the httpRequestMessage +++++++++\n");
-        const std::string                         httpRequestMessage = buffer; // buffer is the http request message as char * filled with recv().
-
-        std::string                         httpRequestHeader = httpRequestMessage.substr(0, httpRequestMessage.find("\r\n\r\n"));
-        std::string                         httpRequestBody   = httpRequestMessage.substr(httpRequestMessage.find("\r\n\r\n") + 4);
-
-        std::string                         httpRequestHeaderFirstLine;
-        std::string                         httpMethod; // GET or POST or DELETE.
-        std::string                         httpUriPath; // check if its a valid path.
-        std::string                         httpVersion;
-        std::string                         httpRequestDirectiveLine;
-        std::vector<std::string>            httpRequestBodyVector; // vector to store body of http request.
-
-        httpRequestHeaderFirstLine = httpRequestHeader.substr(0, httpRequestHeader.find("\r\n"));
-        // remove first line from httpRequestHeader.
-        httpRequestHeader = httpRequestHeader.substr(httpRequestHeader.find("\r\n") + 2);
         
-        httpMethod = httpRequestHeaderFirstLine.substr(0, httpRequestHeaderFirstLine.find(" "));
-        httpUriPath = httpRequestHeaderFirstLine.substr(httpRequestHeaderFirstLine.find(" ") + 1, httpRequestHeaderFirstLine.find("HTTP/") - httpRequestHeaderFirstLine.find(" ") - 1);
-        httpVersion = httpRequestHeaderFirstLine.substr(httpRequestHeaderFirstLine.find("HTTP/"));
+        // print
+        
+        printf("+++++++++++++++++ objects Data ++++++++++++++++++++++\n");
+        
+        std::string httpMsg = buffer;
+        serverRequest request(httpMsg);
+
+        //httpWebServer servers();
+
+
+   
+        printf("++++++++++++++++++++++++++++ Endof objects Data +++++++++++++++++++++++++++++++++++\n");
+
 
         
-        std::map<std::string, std::string>  httpHeaderDirectives; // map to store directives after first line of http request header.
-
-        // fill map directives from httpRequestHeader.
-        while (httpRequestHeader.find("\r\n") != std::string::npos)
-        {
-            httpRequestDirectiveLine = httpRequestHeader.substr(0, httpRequestHeader.find("\r\n"));
-            httpRequestHeader = httpRequestHeader.substr(httpRequestHeader.find("\r\n") + 2);
-            //std::cout << httpRequestDirectiveLine << std::endl;
-            httpHeaderDirectives[httpRequestDirectiveLine.substr(0, httpRequestDirectiveLine.find(":"))] = httpRequestDirectiveLine.substr(httpRequestDirectiveLine.find(":") + 2);
-        }
         
-        // print httpHeaderDirectives map.
-        for (std::map<std::string, std::string>::iterator it = httpHeaderDirectives.begin(); it != httpHeaderDirectives.end(); ++it)
-        {
-            std::cout << it->first << " : " << it->second << std::endl;
-        }
-        printf("+++++++++ EndofParsing Header and Body from the httpRequestMessage +++++++++\n");
         
-        printf("+++++++++++++++++ Request object Data ++++++++++++++++++++++\n");
-        // serverRequest  object under construction.
-        serverRequest request(httpRequestMessage);
-
-        // print request members.
-        std::cout << "httpMethod : " << request.getRequestMethod() << std::endl;
-        std::cout << "httpUriPath : " << request.getRequestUriPath() << std::endl;
-        std::cout << "httpVersion : " << request.getRequestVersion() << std::endl;
-        std::cout << "httpHeaderDirectives : " << std::endl;
         
-        // print map directives.
-        std::map<std::string, std::string> httpHeaderDirectivesMap = request.getRequestHeaderDirectives();
-        std::map<std::string, std::string>::iterator it = httpHeaderDirectivesMap.begin();
-        for (; it != httpHeaderDirectivesMap.end() ; ++it)
-        {
-            std::cout << it->first << " : " << it->second << std::endl;
-        }
-
-        printf("++++++++++++++++++++++++++++ EndofRequest object Data +++++++++++++++++++++++++++++++++++\n");
-
+        
+        
+        printf("+++++++++++++++++ Response object Data ++++++++++++++++++++++\n");
+        printf("+++++++++++++++++ EndOfResponse object Data ++++++++++++++++++++++\n");
         
         char * responseHtml = (char *)malloc(sizeof(char) * (responseHeader.length() + responseBody.length() + 1));
         responseHtml = strcpy(responseHtml, responseHeader.c_str());
