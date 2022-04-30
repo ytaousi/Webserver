@@ -14,7 +14,7 @@ int main(int ac, char **av)
     while (1)
     {
         // (new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) <0 
-        if ((clientFds.assign(1, accept(servers[], (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0))
+        if ()
         {
             std::cout << "Server Failed to Accept Any Connection" << std::endl;
             exit(1);
