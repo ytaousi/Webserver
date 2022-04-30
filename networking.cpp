@@ -13,11 +13,12 @@ int main(int ac, char **av)
     ;
     while (1)
     {
-        // (new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) <0 
-        if ()
+        // (new_socket = accept(it->getSocketFd(), (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0
+        // accept new connection
+        
+        for (int i = 0; i < servers.getServers().size() ; i++)
         {
-            std::cout << "Server Failed to Accept Any Connection" << std::endl;
-            exit(1);
+            clientFds.push_back(accept(servers.getServers()[i].getSocketFd(), (struct sockaddr *)&address, (socklen_t*)&addrlen));
         }
 
         std::string responseHeader = "HTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: 285\n\n"; // should update the content length

@@ -66,6 +66,7 @@ class server
         void                            listenForConnection(int maxConnections);
 
         int                             getSocketFd(void) const;
+        std::vector<int>                getClientFds(void) const;
 
 };
 

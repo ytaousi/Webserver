@@ -256,3 +256,8 @@ int                             server::getSocketFd(void) const
 {
     return _socketFd;
 }
+
+std::vector<int>                server::getClientFds(void) const
+{
+    return _clientFds;
+}
