@@ -32,6 +32,8 @@ int main(int ac, char **av)
             exit(1);
         }
 
+        
+        
         char * responseHtml = (char *)malloc(sizeof(char) * (responseHeader.length() + responseBody.length() + 1));
         responseHtml = strcpy(responseHtml, responseHeader.c_str());
         responseHtml = strcat(responseHtml, responseBody.c_str());

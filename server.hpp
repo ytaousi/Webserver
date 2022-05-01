@@ -3,6 +3,7 @@
 
 # include <vector>
 # include <string>
+# include <cstring>
 # include <map>
 # include <iostream>
 # include <sstream>
