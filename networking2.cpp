@@ -6,6 +6,10 @@
 #include <poll.h>
 #include <stdlib.h>
 #include <string>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include "httpWebServer.hpp"
+
 
 int main(int ac, char **av)
 {
@@ -19,7 +23,7 @@ int main(int ac, char **av)
 
     address.sin_family = AF_INET; // domain (type of ip address) used to connect to socket
     address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = htons( 8081 ); // htons convert from numerical value to network representation  from host_byte rep to network_byte rep 
+    address.sin_port = htons( atoi(av[1]) ); // htons convert from numerical value to network representation  from host_byte rep to network_byte rep 
     
     //memset c++ ish.
     memset(address.sin_zero, '\0', sizeof (address.sin_zero));
@@ -33,12 +37,14 @@ int main(int ac, char **av)
     if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) // when the socket is created there is no address assigned to it
     {
         std::cout << "Couldn't Bind Socket" << std::endl;
+        close(server_fd);
         exit(1);
     }
 
     if (listen(server_fd, 10) < 0)
     {
         std::cout << "Server Failed to listen on Port" << std::endl;
+        close(server_fd);
         exit(1);
     }
 
@@ -73,6 +79,8 @@ int main(int ac, char **av)
             exit(1);
         }
 
+        // use fcntl() for non-blocking I/O
+        
         // some sockets are ready. examine readFds
         for (int fd = 0; fd < nfds + 1; fd++)
         {
@@ -81,6 +89,7 @@ int main(int ac, char **av)
                 continue;
             }
 
+            // if the socket is ready for reading
             if (((pollfds + fd)->revents & POLLIN) == POLLIN)
             {
                 if ((pollfds + fd)->fd == server_fd) // request for new connection
@@ -91,7 +100,6 @@ int main(int ac, char **av)
                         std::cout << "Server Failed to Accept" << std::endl;
                         exit(1);
                     }
-
                     // add newFd to pollfds
                     if (numFds == maxFds)
                     {
@@ -121,7 +129,7 @@ int main(int ac, char **av)
                     else if (value_read == 0)
                     {
                         // connection closed
-                        if ( close((pollfds + fd)->fd) < 0)
+                        if (close((pollfds + fd)->fd) < 0)
                         {
                             std::cout << "Server Failed to Close" << std::endl;
                             exit(1);
@@ -130,10 +138,17 @@ int main(int ac, char **av)
                     }
                     else
                     {
+                        // new client file descriptor
+                        printf("\n++++++++++++++++\n");
+                        std::cout << "Client File Descriptor: " << (pollfds + fd)->fd << std::endl;
+                        printf("\n++++++++++++++++\n");
+                        // parse request
+                        
                         // print request header to stdout
                         std::cout << buffer << std::endl;
 
                         // send response
+
                         if (send((pollfds + fd)->fd, responseHeader.c_str(), responseHeader.length(), 0) < 0)
                         {
                             std::cout << "Server Failed to Send" << std::endl;
@@ -144,13 +159,20 @@ int main(int ac, char **av)
                             std::cout << "Server Failed to Send" << std::endl;
                             exit(1);
                         }
+
+                        // close connection
+                        if ( close((pollfds + fd)->fd) < 0)
+                        {
+                            std::cout << "Server Failed to Close" << std::endl;
+                            exit(1);
+                        }
+                        (pollfds + fd)->fd *= -1; // make it negative so that it is ignored in the next loop
                     }
-
-
                 }
-            }
-        }
-    }    
+            } // end if POLLIN 
+        } // end for loop over all file descriptors
+    
+    }    // while 1
 
     return 0;
 }

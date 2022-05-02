@@ -31,6 +31,7 @@ httpWebServer::~httpWebServer()
     _servers.clear();
     _configFilePath.clear();
     _serverCount = 0;
+    _clientFds.clear();
 }
 
 void    httpWebServer::createNewServer(const std::vector<std::string> & serverBlock)

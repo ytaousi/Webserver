@@ -28,7 +28,7 @@ class server
 
         struct sockaddr_in              _address;
         int                             _socketFd;
-        std::vector<int>                _clientFds;
+        
 
     public:
         server(const std::vector<std::string> & serverBlock);

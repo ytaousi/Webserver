@@ -2,6 +2,7 @@
 # define HTTPWEBSERVER_HPP
 
 # include "server.hpp"
+# include "serverRequest.hpp"
 
 
 class httpWebServer
@@ -10,7 +11,7 @@ class httpWebServer
         std::vector<server>     _servers;
         std::string             _configFilePath;
         size_t                  _serverCount;
-    
+        std::vector<int>                _clientFds;
     public:
         httpWebServer(const std::string & configFilePath);
         ~httpWebServer();
