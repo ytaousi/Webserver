@@ -57,7 +57,7 @@ void    httpWebServer::getConfigurations(const std::string & configFilePath)
     {
         // ValidateBlockConfig then create serverObject.
         // if not valide throw error .
-        // not done yet.
+        // checkConfigurations(serverBlock) not implemented yet.
         createNewServer(serverBlock);
         _serverCount++;
     }

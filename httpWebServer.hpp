@@ -15,9 +15,11 @@ class httpWebServer
     public:
         httpWebServer(const std::string & configFilePath);
         ~httpWebServer();
+        
         void                            createNewServer(const std::vector<std::string> & serverBlock);
         void                            checkConfigurations();
         void                            printServerConfiguration() const;
+        void                            connectServers();
         
         
         
@@ -28,7 +30,6 @@ class httpWebServer
         const std::vector<std::string>  getServerBlock(std::istream & configFile);
 
 
-        void                            connectServers();
         
 };
 

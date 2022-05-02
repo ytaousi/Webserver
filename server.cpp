@@ -113,7 +113,7 @@ server::~server()
     _indexFiles.clear();
     _locations.clear();
     _cgiExtentions.clear();
-    // _socketFd;
+    // _tmp = 0;
 }
 
 // print server configuration.
@@ -257,7 +257,4 @@ int                             server::getSocketFd(void) const
     return _socketFd;
 }
 
-std::vector<int>                server::getClientFds(void) const
-{
-    return _clientFds;
-}
+
