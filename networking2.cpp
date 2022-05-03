@@ -90,7 +90,7 @@ int main(int ac, char **av)
             }
 
             // if the socket is ready for reading
-            if (((pollfds + fd)->revents & POLLIN) == POLLIN)
+            if (((pollfds + fd)->revents & POLLIN)) // == POLLIN ??!.
             {
                 if ((pollfds + fd)->fd == server_fd) // request for new connection
                 {
