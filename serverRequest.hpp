@@ -7,6 +7,7 @@
 
 // check some directives in http request header if they are valid.
 // check if every line stored ends with '\r\n'
+// important request directives: Host, Connection, Content-Length, Transfer-Encoding, Content-Type...
 
 
 class serverRequest
