@@ -85,12 +85,20 @@ int main(int ac, char **av)
         
         char buffer[30000] = {0}; // buffer to fill with request data.
         
+
+        // check if filedescriptor is ready to read from either using select or poll.
+        // if filedescriptor is ready to read then read from it.
+
+
+        
         value_read = recv(new_socket, buffer, 30000, 0);
         if (value_read < 0)
         {
             std::cout << "Server Failed to Read Request" << std::endl;
             exit(1);
         }
+
+        
 
         
         

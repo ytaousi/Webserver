@@ -38,6 +38,11 @@ const std::vector<std::string> & serverRequest::getRequestBody() const
     return requestBody;
 }
 
+size_t serverRequest::getRequestBodySize() const
+{
+    return requestBodylength;
+}
+
 // setters for serverRequest object.
 void serverRequest::setHeader(const std::string & httpRequestMessage)
 {

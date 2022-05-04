@@ -5,6 +5,10 @@
 # include <string>
 # include <map>
 
+// check some directives in http request header if they are valid.
+// check if every line stored ends with '\r\n'
+
+
 class serverRequest
 {
     public:
@@ -17,6 +21,7 @@ class serverRequest
         const std::string &                 getRequestVersion() const;
         std::map<std::string, std::string>  getRequestHeaderDirectives();
         const std::vector<std::string> &    getRequestBody() const;
+        size_t                              getRequestBodySize() const;
 
         // setters for serverRequest object.
         void setHeader(const std::string & httpRequestMessage);
